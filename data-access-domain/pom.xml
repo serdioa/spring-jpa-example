@@ -9,7 +9,7 @@
 
     <parent>
         <groupId>de.serdioa</groupId>
-        <artifactId>spring-hibernate-example</artifactId>
+        <artifactId>spring-jpa-example</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
