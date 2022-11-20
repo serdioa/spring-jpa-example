@@ -24,14 +24,12 @@ public class Application {
 
     private static void testJpaClient(JpaClient jpaClient) {
         jpaClient.readAllUsersByQuery();
-        jpaClient.readUnlockedUsersByQuery();
-        jpaClient.readAccountExpiredUsersByQuery();
-        jpaClient.readPasswordExpiredUsersByQuery();
+        jpaClient.readLockedUsersByQuery();
+        jpaClient.readActiveUsersByQuery();
 
         jpaClient.readAllUsersByCriteria();
-        jpaClient.readUnlockedUsersByCriteria();
-        jpaClient.readAccountExpiredUsersByCriteria();
-        jpaClient.readPasswordExpiredUsersByCriteria();
+        jpaClient.readLockedUsersByCriteria();
+        jpaClient.readActiveUsersByCriteria();
     }
 
 
