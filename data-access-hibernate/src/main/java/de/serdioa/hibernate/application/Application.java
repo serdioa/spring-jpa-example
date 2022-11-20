@@ -15,7 +15,14 @@ public class Application {
                 .build().run(args);
 
         JpaClient jpaClient = ctx.getBean(JpaClient.class);
+        testJpaClient(jpaClient);
 
+        RepositoryClient repoClient = ctx.getBean(RepositoryClient.class);
+        testRepositoryClient(repoClient);
+    }
+
+
+    private static void testJpaClient(JpaClient jpaClient) {
         jpaClient.readAllUsersByQuery();
         jpaClient.readUnlockedUsersByQuery();
         jpaClient.readAccountExpiredUsersByQuery();
@@ -25,5 +32,15 @@ public class Application {
         jpaClient.readUnlockedUsersByCriteria();
         jpaClient.readAccountExpiredUsersByCriteria();
         jpaClient.readPasswordExpiredUsersByCriteria();
+    }
+
+
+    private static void testRepositoryClient(RepositoryClient repoClient) {
+        repoClient.findAll();
+        repoClient.findById();
+        repoClient.findByUsername();
+        repoClient.findByExpireOnLessThan();
+        repoClient.findLocked();
+        repoClient.findSimilarName();
     }
 }
