@@ -1,6 +1,8 @@
 package de.serdioa.hibernate.domain;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.Set;
 
 import javax.persistence.CollectionTable;
@@ -32,6 +34,12 @@ public class User implements Serializable {
 
     @Column(name = "Password")
     private String password;
+
+    @Column(name = "Password_Changed_On", columnDefinition = "TIMESTAMP")
+    private ZonedDateTime passwordChangedOn;
+
+    @Column(name = "Expire_On", columnDefinition = "DATE")
+    private LocalDate expireOn;
 
     @Column(name = "Locked")
     private Boolean locked;

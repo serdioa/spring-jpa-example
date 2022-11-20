@@ -1,5 +1,7 @@
 package de.serdioa.hibernate.application;
 
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import de.serdioa.hibernate.domain.User;
@@ -55,6 +57,40 @@ public class JpaClient {
     }
 
 
+    public void readAccountExpiredUsersByQuery() {
+        System.out.println("Reading Users with expired account by query");
+        TypedQuery<User> query = this.em.createQuery("SELECT u FROM User u WHERE u.expireOn < :expireOn", User.class);
+        query.setParameter("expireOn", LocalDate.now());
+
+        List<User> users = query.getResultList();
+
+        users.forEach(user -> {
+            System.out.printf("    %s%n", user);
+        });
+
+        System.out.println("Finished reading Users with expired account by query");
+    }
+
+
+    public void readPasswordExpiredUsersByQuery() {
+        System.out.println("Reading Users with expired password by query");
+
+        ZonedDateTime thresholdTimestamp = ZonedDateTime.now().minusMonths(3);
+
+        TypedQuery<User> query = this.em
+                .createQuery("SELECT u FROM User u WHERE u.passwordChangedOn < :thresholdTimestamp", User.class);
+        query.setParameter("thresholdTimestamp", thresholdTimestamp);
+
+        List<User> users = query.getResultList();
+
+        users.forEach(user -> {
+            System.out.printf("    %s%n", user);
+        });
+
+        System.out.println("Finished reading Users with expired account by query");
+    }
+
+
     public void readAllUsersByCriteria() {
         System.out.println("Reading all Users by criteria");
         CriteriaQuery<User> criteria = this.em.getCriteriaBuilder().createQuery(User.class);
@@ -71,9 +107,11 @@ public class JpaClient {
 
     public void readUnlockedUsersByCriteria() {
         System.out.println("Reading unlocked Users by criteria");
+
         CriteriaBuilder cb = this.em.getCriteriaBuilder();
         CriteriaQuery<User> criteria = cb.createQuery(User.class);
         Root<User> userRoot = criteria.from(User.class);
+
         ParameterExpression<Boolean> lockedExpression = cb.parameter(Boolean.class, "locked");
         criteria.select(userRoot).where(cb.equal(userRoot.get("locked"), lockedExpression));
 
@@ -86,5 +124,54 @@ public class JpaClient {
             System.out.printf("    %s%n", user);
         });
         System.out.println("Finished reading unlocked Users by criteria");
+    }
+
+
+    public void readAccountExpiredUsersByCriteria() {
+        System.out.println("Reading Users with expired account by criteria");
+
+        CriteriaBuilder cb = this.em.getCriteriaBuilder();
+        CriteriaQuery<User> criteria = cb.createQuery(User.class);
+        Root<User> userRoot = criteria.from(User.class);
+
+        ParameterExpression<LocalDate> expireOnExpression = cb.parameter(LocalDate.class, "expireOn");
+        criteria.select(userRoot).where(cb.lessThan(userRoot.get("expireOn"), expireOnExpression));
+
+        TypedQuery<User> query = this.em.createQuery(criteria);
+        query.setParameter(expireOnExpression, LocalDate.now());
+
+        List<User> users = query.getResultList();
+
+        users.forEach(user -> {
+            System.out.printf("    %s%n", user);
+        });
+
+        System.out.println("Finished reading Users with expired account by criteria");
+    }
+
+
+    public void readPasswordExpiredUsersByCriteria() {
+        System.out.println("Reading Users with expired password by criteria");
+
+        ZonedDateTime thresholdTimestamp = ZonedDateTime.now().minusMonths(3);
+
+        CriteriaBuilder cb = this.em.getCriteriaBuilder();
+        CriteriaQuery<User> criteria = cb.createQuery(User.class);
+        Root<User> userRoot = criteria.from(User.class);
+
+        ParameterExpression<ZonedDateTime> passwordChangedOnExpression =
+                cb.parameter(ZonedDateTime.class, "thresholdTimestamp");
+        criteria.select(userRoot).where(cb.lessThan(userRoot.get("passwordChangedOn"), passwordChangedOnExpression));
+
+        TypedQuery<User> query = this.em.createQuery(criteria);
+        query.setParameter(passwordChangedOnExpression, thresholdTimestamp);
+
+        List<User> users = query.getResultList();
+
+        users.forEach(user -> {
+            System.out.printf("    %s%n", user);
+        });
+
+        System.out.println("Finished reading Users with expired account by criteria");
     }
 }

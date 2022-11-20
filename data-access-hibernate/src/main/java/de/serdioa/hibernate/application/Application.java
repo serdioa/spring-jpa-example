@@ -18,8 +18,12 @@ public class Application {
 
         jpaClient.readAllUsersByQuery();
         jpaClient.readUnlockedUsersByQuery();
+        jpaClient.readAccountExpiredUsersByQuery();
+        jpaClient.readPasswordExpiredUsersByQuery();
 
         jpaClient.readAllUsersByCriteria();
         jpaClient.readUnlockedUsersByCriteria();
+        jpaClient.readAccountExpiredUsersByCriteria();
+        jpaClient.readPasswordExpiredUsersByCriteria();
     }
 }
