@@ -6,13 +6,13 @@ import java.util.Optional;
 import de.serdioa.hibernate.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 
-//QuerydslPredicateExecutor<User>, CustomUserRepository
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer>, CustomUserRepository {
+public interface UserRepository extends JpaRepository<User, Integer>, CustomUserRepository, QuerydslPredicateExecutor<User> {
 
     Optional<User> findByUsername(String username);
 

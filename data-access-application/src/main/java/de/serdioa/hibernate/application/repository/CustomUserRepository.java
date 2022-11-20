@@ -4,5 +4,9 @@ import de.serdioa.hibernate.domain.User;
 
 
 public interface CustomUserRepository {
+
     Iterable<User> findActiveUsers();
+
+
+    Iterable<User> findActiveUsersQuery();
 }

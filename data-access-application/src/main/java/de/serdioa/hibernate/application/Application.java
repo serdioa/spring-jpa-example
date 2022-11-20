@@ -44,5 +44,7 @@ public class Application {
         repoClient.findSimilarName();
 
         repoClient.findActiveUsers();
+        repoClient.findActiveUsersCustomQuery();
+        repoClient.findActiveUsersRepoQuery();
     }
 }

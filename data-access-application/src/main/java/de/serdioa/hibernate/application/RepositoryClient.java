@@ -1,10 +1,13 @@
 package de.serdioa.hibernate.application;
 
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 
+import com.querydsl.core.types.Predicate;
 import org.springframework.stereotype.Component;
 import de.serdioa.hibernate.application.repository.UserRepository;
+import de.serdioa.hibernate.domain.QUser;
 import de.serdioa.hibernate.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -103,5 +106,32 @@ public class RepositoryClient {
         }
 
         System.out.println("Finished reading active users");
+    }
+
+
+    public void findActiveUsersCustomQuery() {
+        System.out.println("Reading active users with custom QueryDSL query");
+
+        QUser quser = QUser.user;
+        Predicate predicate = quser.locked.eq(false)
+                .and(quser.passwordChangedOn.gt(ZonedDateTime.now().minusMonths(3)))
+                .and(quser.expireOn.isNull().or(quser.expireOn.gt(LocalDate.now())));
+
+        for (User user : this.userRepository.findAll(predicate)) {
+            System.out.println("    " + user);
+        }
+
+        System.out.println("Finished reading active users with custom QueryDSL query");
+    }
+
+
+    public void findActiveUsersRepoQuery() {
+        System.out.println("Reading active users with Spring Data repository based on QueryDSL query");
+
+        for (User user : this.userRepository.findActiveUsersQuery()) {
+            System.out.println("    " + user);
+        }
+
+        System.out.println("Finished reading active users with Spring Data repository based on QueryDSL query");
     }
 }
