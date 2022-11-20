@@ -93,4 +93,15 @@ public class RepositoryClient {
 
         System.out.println("Finished reading users by name pattern");
     }
+
+
+    public void findActiveUsers() {
+        System.out.println("Reading active users");
+
+        for (User user : this.userRepository.findActiveUsers()) {
+            System.out.println("    " + user);
+        }
+
+        System.out.println("Finished reading active users");
+    }
 }

@@ -42,5 +42,7 @@ public class Application {
         repoClient.findByExpireOnLessThan();
         repoClient.findLocked();
         repoClient.findSimilarName();
+
+        repoClient.findActiveUsers();
     }
 }

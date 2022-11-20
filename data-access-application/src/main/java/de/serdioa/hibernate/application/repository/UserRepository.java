@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 //QuerydslPredicateExecutor<User>, CustomUserRepository
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, Integer>, CustomUserRepository {
 
     Optional<User> findByUsername(String username);
 
